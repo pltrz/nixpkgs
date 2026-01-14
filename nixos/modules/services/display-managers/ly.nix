@@ -39,9 +39,9 @@ let
     service_name = "ly";
     path = "/run/current-system/sw/bin";
     waylandsessions = "${dmcfg.sessionData.desktops}/share/wayland-sessions";
-    xsessions = "${dmcfg.sessionData.desktops}/share/xsessions";
-    xauth_cmd = lib.optionalString xcfg.enable "${pkgs.xorg.xauth}/bin/xauth";
-    x_cmd = lib.optionalString xcfg.enable xserverWrapper;
+    xsessions = lib.optionalString cfg.x11Support "${dmcfg.sessionData.desktops}/share/xsessions";
+    xauth_cmd = lib.optionalString cfg.x11Support "${pkgs.xorg.xauth}/bin/xauth";
+    x_cmd = lib.optionalString cfg.x11Support xserverWrapper;
     setup_cmd = dmcfg.sessionData.wrapper;
   };
 
@@ -57,7 +57,7 @@ in
       x11Support = mkOption {
         description = "Whether to enable support for X11";
         type = lib.types.bool;
-        default = true;
+        default = xcfg.enable;
       };
 
       package = mkPackageOption pkgs [ "ly" ] { };
@@ -83,6 +83,12 @@ in
         assertion = !dmcfg.autoLogin.enable;
         message = ''
           ly doesn't support auto login.
+        '';
+      }
+      {
+        assertion = !cfg.x11Support || xcfg.enable;
+        message = ''
+          ly x11Support requires `services.xserver.enable` to be `true`.
         '';
       }
     ];
