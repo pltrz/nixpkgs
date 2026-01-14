@@ -38,8 +38,6 @@ let
     restart_cmd = "/run/current-system/systemd/bin/systemctl reboot";
     service_name = "ly";
     path = "/run/current-system/sw/bin";
-    term_reset_cmd = "${pkgs.ncurses}/bin/tput reset";
-    term_restore_cursor_cmd = "${pkgs.ncurses}/bin/tput cnorm";
     waylandsessions = "${dmcfg.sessionData.desktops}/share/wayland-sessions";
     xsessions = "${dmcfg.sessionData.desktops}/share/xsessions";
     xauth_cmd = lib.optionalString xcfg.enable "${pkgs.xorg.xauth}/bin/xauth";
