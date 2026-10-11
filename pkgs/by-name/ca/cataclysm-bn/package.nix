@@ -1,6 +1,6 @@
 {
   lib,
-  stdenv,
+  clangStdenv,
   fetchFromGitHub,
   cmake,
   pkg-config,
@@ -17,7 +17,8 @@
   useXdgDir ? false,
 }:
 
-stdenv.mkDerivation (finalAttrs: {
+# Upstream only builds with Clang, and GCC rejects some of its code
+clangStdenv.mkDerivation (finalAttrs: {
   pname = "cataclysm-bn";
   version = "0.13.0";
 
